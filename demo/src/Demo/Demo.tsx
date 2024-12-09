@@ -17,7 +17,7 @@ function Demo() {
   const [dataInput, setDataInput] = useState(
     `Artificial Intelligence is transforming industries.
 The stock market has seen unprecedented growth.
-Healthcare advancements are improving lives.`
+Healthcare advancements are improving lives.`,
   ); // Newline-separated data
 
   // Classification result state
@@ -131,7 +131,10 @@ classify({ labels, data, config, apiKey })
     <article className="wrapper">
       <header>
         <h1>AI Zero-Shot Classifier Demo</h1>
-        <p>Classify text data against predefined labels without training or fine-tuning using AI.</p>
+        <p>
+          Classify text data against predefined labels without training or
+          fine-tuning using AI.
+        </p>
       </header>
       <div className="container">
         <section className="config-section">
@@ -161,8 +164,7 @@ classify({ labels, data, config, apiKey })
             <select
               id="similarity"
               value={similarity}
-              onChange={(e) => setSimilarity(e.target.value)}
-            >
+              onChange={(e) => setSimilarity(e.target.value)}>
               <option value="cosine">Cosine Similarity</option>
               <option value="dot">Dot Product</option>
               <option value="euclidean">Euclidean Distance</option>
@@ -199,7 +201,8 @@ classify({ labels, data, config, apiKey })
                       <strong>Label:</strong> {result.label}
                     </p>
                     <p>
-                      <strong>Confidence:</strong> {result.confidence.toFixed(4)}
+                      <strong>Confidence:</strong>{' '}
+                      {result.confidence.toFixed(4)}
                     </p>
                   </li>
                 ))}
@@ -223,7 +226,7 @@ classify({ labels, data, config, apiKey })
           <span role="img" aria-label="love">
             ❤️
           </span>{' '}
-          by Your Name
+          by <a href="https://ahmedtokyo.com">Ahmed Tokyo</a>
         </p>
       </footer>
     </article>
