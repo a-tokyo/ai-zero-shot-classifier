@@ -1,10 +1,13 @@
-// @todo
-// import groq from 'groq-sdk';
+import Groq from 'groq-sdk';
 
 /**
  * Create a new Groq client
  */
-const createClient = () => {};
+const createClient = (config) =>
+  new Groq({
+    apiKey:
+      config.apiKey || process.env.GROQ_API_KEY || process.env.PROVIDER_API_KEY,
+  });
 
 /**
  * Create embeddings using groq models

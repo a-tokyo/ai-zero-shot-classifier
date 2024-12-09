@@ -1,12 +1,12 @@
 import chunk from 'lodash.chunk';
 import pMap from '../utils/p-map';
 
-import openAIProvider from '../providers/openai';
+import { getProvider } from '../providers';
 import { getSimilarityFunction } from '../utils/similarityFunctions';
 
 interface ClassifyConfig {
   /** Similarity function to use, defaults to cosine */
-  similarity?: 'cosine' | 'dot' | 'euclidean';
+  similarity?: 'cosine' | 'dot' | 'euclidean' | string;
   /** Embedding batch size for data, defaults to 50 */
   embeddingBatchSizeData?: number;
   /** Embedding batch size for labels, defaults to 50 */
@@ -24,7 +24,7 @@ interface ClassifyConfig {
 /**
  * Supported providers
  */
-const SUPPORTED_PROVIDERS = ['openai'];
+const SUPPORTED_PROVIDERS = ['openai', 'groq'];
 
 /**
  * Validate provider
@@ -98,9 +98,7 @@ class ZeroShotClassifier {
    * @param config
    */
   _createAndSetClient(config): void {
-    if (config.provider === 'openai') {
-      this.client = openAIProvider.createClient(config);
-    }
+    this.client = getProvider(config.provider).createClient(config);
   }
 
   /**
@@ -126,6 +124,12 @@ class ZeroShotClassifier {
     apiKey?: string,
   ): void {
     _validateProvider(provider);
+
+    // clear cache if provider or model changes
+    if (provider !== this.provider || model !== this.model) {
+      this.labelsCache = {};
+    }
+
     this.provider = provider;
     this.model = model;
     this.apiKey = apiKey;
@@ -151,7 +155,7 @@ class ZeroShotClassifier {
     const embeddings = await pMap(
       chunks,
       async (currChunk: string[]) => {
-        const response = await openAIProvider.createEmbedding(this.client, {
+        const response = await (getProvider(this.provider)).createEmbedding(this.client, {
           model: this.model,
           input: currChunk,
         });

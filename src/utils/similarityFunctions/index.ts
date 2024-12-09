@@ -17,7 +17,7 @@ const similarityFunctions = {
  * @param similarity
  * @returns Function
  */
-const getSimilarityFunction = (similarity: 'cosine' | 'dot' | 'euclidean') => {
+const getSimilarityFunction = (similarity: 'cosine' | 'dot' | 'euclidean' | string) => {
   const fn = similarityFunctions[similarity];
   if (!fn) {
     throw new Error(`Invalid similarity function: "${similarity}"`);
