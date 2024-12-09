@@ -1,7 +1,7 @@
 {
   "name": "ai-zero-shot-classifier",
   "version": "0.0.1",
-  "description": "🧠 Lightweight tool to perform zero shot classification. Can be applied out of the box to any text classification problem.",
+  "description": "🧠 powerful JavaScript library that leverages advanced AI embeddings to perform zero-shot text classification. Whether you're dealing with unlabelled data or seeking to classify text against dynamic and user-defined labels, this library provides a seamless and efficient solution.",
   "author": {
     "name": "Ahmed Tarek",
     "email": "ahmed.tokyo1@gmail.com",
@@ -94,9 +94,26 @@
     "openai",
     "classifier",
     "zero-shot",
-    "demo",
+    "zero-shot-classification",
+    "natural-language-processing",
+    "machine-learning",
+    "nlp",
+    "embedding",
+    "text-classification",
+    "similarity",
+    "ai-classifier",
+    "typescript",
+    "react",
+    "vue",
     "nodejs",
-    "typescript"
+    "deep-learning",
+    "vector-similarity",
+    "text-processing",
+    "semantic-search",
+    "groq",
+    "llama",
+    "grok",
+    "llm"
   ],
   "contributors": [
     {
