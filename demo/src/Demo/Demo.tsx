@@ -8,6 +8,8 @@ import classify from '../../../src/classify'; // Adjust the import path as neces
 function Demo() {
   // Configuration states
   const [apiKey, setApiKey] = useState(''); // New state for API Key
+  const [provider, setProvider] = useState<'openai' | 'groq'>('openai'); // Provider selection
+  const [model, setModel] = useState('text-embedding-3-small'); // Model selection
   const [labelsInput, setLabelsInput] = useState('Technology, Health, Finance'); // Comma-separated labels
   const [similarity, setSimilarity] = useState('cosine'); // 'cosine', 'dot', 'euclidean'
 
@@ -38,9 +40,9 @@ Healthcare advancements are improving lives.`,
       .map((data) => data.trim())
       .filter((data) => data.length > 0);
 
-    setCodeString(`import classify from 'ai-zero-shot-classifier';
+    setCodeString(`import { classify } from 'ai-zero-shot-classifier';
 
-/** Your OpenAI API Key */
+/** Your Provider API Key */
 const apiKey = '${apiKey}';
 
 /** Labels for classification */
@@ -53,6 +55,8 @@ const data = [
 
 /** Configuration (optional) */
 const config = {
+  provider: '${provider}',
+  model: '${model}',
   similarity: '${similarity}',
 };
 
@@ -65,7 +69,7 @@ classify({ labels, data, config, apiKey })
     console.error(error);
   });
 `);
-  }, [apiKey, labelsInput, dataInput, similarity]);
+  }, [apiKey, provider, model, labelsInput, dataInput, similarity]);
 
   // Handle classification
   const handleClassify = async () => {
@@ -73,7 +77,6 @@ classify({ labels, data, config, apiKey })
     setError('');
     setResults([]);
 
-    // Parse labels and data
     const labels = labelsInput
       .split(',')
       .map((label) => label.trim())
@@ -97,7 +100,7 @@ classify({ labels, data, config, apiKey })
     }
 
     if (!apiKey) {
-      setError('Please provide your OpenAI API Key.');
+      setError('Please provide your Provider API Key.');
       setLoading(false);
       return;
     }
@@ -106,8 +109,10 @@ classify({ labels, data, config, apiKey })
       const classificationResults = await classify({
         labels,
         data,
+        provider,
+        model,
         config: { similarity },
-        apiKey, // Pass the API Key here
+        apiKey,
       });
 
       // Combine each data item with its classification result
@@ -129,22 +134,39 @@ classify({ labels, data, config, apiKey })
     <article className="wrapper">
       <header>
         <h1>AI Zero-Shot Classifier Demo</h1>
-        <p>
-          Classify text data against predefined labels without training or
-          fine-tuning using AI.
-        </p>
+        <p>Classify text data against predefined labels using AI-powered embeddings.</p>
       </header>
       <div className="container">
         <section className="config-section">
           <h2>Configuration</h2>
           <div className="config-group">
-            <label htmlFor="apiKey">OpenAI API Key:</label>
+            <label htmlFor="apiKey">Provider API Key:</label>
             <input
               type="password"
               id="apiKey"
-              placeholder="Enter your OpenAI API Key"
+              placeholder="Enter your Provider API Key"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
+            />
+          </div>
+          <div className="config-group">
+            <label htmlFor="provider">Provider:</label>
+            <select
+              id="provider"
+              value={provider}
+              onChange={(e) => setProvider(e.target.value)}>
+              <option value="openai">OpenAI</option>
+              <option value="groq">Groq</option>
+            </select>
+          </div>
+          <div className="config-group">
+            <label htmlFor="model">Model:</label>
+            <input
+              type="text"
+              id="model"
+              placeholder="e.g., text-embedding-3-small or text-embedding-ada-002"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
             />
           </div>
           <div className="config-group">
@@ -192,16 +214,9 @@ classify({ labels, data, config, apiKey })
               <ul>
                 {results.map((result, index) => (
                   <li key={index} className="result-item">
-                    <p>
-                      <strong>Text:</strong> {result.text}
-                    </p>
-                    <p>
-                      <strong>Label:</strong> {result.label}
-                    </p>
-                    <p>
-                      <strong>Confidence:</strong>{' '}
-                      {result.confidence.toFixed(4)}
-                    </p>
+                    <p><strong>Text:</strong> {result.text}</p>
+                    <p><strong>Label:</strong> {result.label}</p>
+                    <p><strong>Confidence:</strong> {result.confidence.toFixed(4)}</p>
                   </li>
                 ))}
               </ul>
@@ -221,9 +236,7 @@ classify({ labels, data, config, apiKey })
       <footer>
         <p>
           Built with{' '}
-          <span role="img" aria-label="love">
-            ❤️
-          </span>{' '}
+          <span role="img" aria-label="love">❤️</span>{' '}
           by <a href="https://ahmedtokyo.com">Ahmed Tokyo</a>
         </p>
       </footer>
