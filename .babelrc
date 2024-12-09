@@ -1,0 +1,29 @@
+{
+  "presets": [
+    "@babel/typescript",
+    [
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": [
+            "last 3 versions"
+          ],
+          "node": "20.11"
+        }
+      }
+    ],
+    "@babel/react"
+  ],
+  "env": {
+    "production": {
+      "comments": false,
+      "compact": "auto",
+      "minified": true,
+      "ignore": [
+        "**/__tests__/",
+        "**/__mocks__/",
+        "**/*.test.js"
+      ]
+    }
+  }
+}
