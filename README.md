@@ -1,10 +1,16 @@
 
 # ai-zero-shot-classifier
 
-![NPM Version](https://img.shields.io/npm/v/ai-zero-shot-classifier.svg)
-![NPM Downloads](https://img.shields.io/npm/dt/ai-zero-shot-classifier.svg)
-![Codecov Coverage](https://img.shields.io/codecov/c/github/A-Tokyo/ai-zero-shot-classifier.svg)
-![Twitter Follow](https://img.shields.io/twitter/follow/ahmad_tokyo.svg?label=Follow%20@ahmad_tokyo)
+<a href="https://npmjs.com/package/ai-zero-shot-classifier">
+  <img src="https://img.shields.io/npm/v/ai-zero-shot-classifier.svg"></img>
+  <img src="https://img.shields.io/npm/dt/ai-zero-shot-classifier.svg"></img>
+</a>
+<a href="https://codecov.io/gh/A-Tokyo/ai-zero-shot-classifier">
+  <img src="https://img.shields.io/codecov/c/github/a-tokyo/ai-zero-shot-classifier.svg"></img>
+</a>
+<a href="https://twitter.com/intent/follow?screen_name=ahmad_tokyo"><img src="https://img.shields.io/twitter/follow/ahmad_tokyo.svg?label=Follow%20@ahmad_tokyo" alt="Follow @ahmad_tokyo"></img></a>
+
+[Checkout the demo for a quick start!](https://a-tokyo.github.io/ai-zero-shot-classifier)
 
 ---
 
