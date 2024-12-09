@@ -51,10 +51,10 @@ yarn add ai-zero-shot-classifier
 
 ## 🚀 Usage
 
-### Basic Example
+### Basic Example with classify Function
 
 ```javascript
-import classify from 'ai-zero-shot-classifier';
+import { classify } from 'ai-zero-shot-classifier';
 
 const labels = ['Technology', 'Health', 'Finance'];
 const data = [
@@ -70,6 +70,41 @@ classify({ labels, data, config: { similarity: 'cosine' } })
   .catch((error) => {
     console.error(error);
   });
+```
+
+### Example with ZeroShotClassifier Class
+
+```javascript
+import ZeroShotClassifier from 'ai-zero-shot-classifier';
+
+const labels = ['Technology', 'Health', 'Finance'];
+const data = [
+  'Artificial Intelligence is transforming industries.',
+  'The stock market has seen unprecedented growth.',
+  'Healthcare advancements are improving lives.'
+];
+
+// Create an instance of the classifier
+const classifier = new ZeroShotClassifier({
+  provider: 'openai', // Specify the provider
+  model: 'text-embedding-ada-002', // Specify the model
+  apiKey: 'your-api-key', // API key for authentication
+  labels, // Provide labels for classification
+});
+
+(async () => {
+  try {
+    const results = await classifier.classify(data, {
+      similarity: 'cosine', // Choose the similarity metric
+    });
+
+    // perform more classification
+
+    console.log('Classification Results:', results);
+  } catch (error) {
+    console.error('Error during classification:', error);
+  }
+})();
 ```
 
 ---
