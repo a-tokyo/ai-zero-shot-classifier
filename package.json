@@ -1,0 +1,125 @@
+{
+  "name": "ai-zero-shot-classifier",
+  "version": "0.0.1",
+  "description": "🧠 powerful JavaScript library that leverages advanced AI embeddings to perform zero-shot text classification. Whether you're dealing with unlabelled data or seeking to classify text against dynamic and user-defined labels, this library provides a seamless and efficient solution.",
+  "author": {
+    "name": "Ahmed Tarek",
+    "email": "ahmed.tokyo1@gmail.com",
+    "url": "https://github.com/A-Tokyo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/a-tokyo/ai-zero-shot-classifier.git"
+  },
+  "main": "dist/index.js",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "homepage": "https://github.com/a-tokyo/ai-zero-shot-classifier#readme",
+  "bugs": {
+    "url": "https://github.com/a-tokyo/ai-zero-shot-classifier/issues"
+  },
+  "scripts": {
+    "start": "webpack serve --mode development --port 3001",
+    "transpile": "rm -rf dist && yarn eslint --ext .ts --ignore-pattern '*.test.*' src && yarn tsc -p ./tsconfig.build.json && babel src -x .ts,.js --out-dir dist -s --copy-files && rm -rf dist/**/__snapshots__ && find ./dist -name '*.test.js*' -type f -delete",
+    "prepublishOnly": "npm run transpile",
+    "build": "webpack --mode production",
+    "deploy": "gh-pages -d demo/dist",
+    "publish-demo": "npm run build && npm run deploy",
+    "babel-node": "babel-node -x .ts,.tsx,.js,.jsx",
+    "test": "jest"
+  },
+  "peerDependencies": {},
+  "dependencies": {
+    "lodash.chunk": "^4.2.0",
+    "openai": "^4.76.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.14.8",
+    "@babel/core": "^7.14.8",
+    "@babel/eslint-parser": "^7.19.1",
+    "@babel/node": "^7.26.0",
+    "@babel/preset-env": "^7.14.8",
+    "@babel/preset-react": "^7.14.5",
+    "@babel/preset-typescript": "^7.26.0",
+    "@types/jest": "^29.5.14",
+    "@typescript-eslint/eslint-plugin": "^5.36.1",
+    "@typescript-eslint/parser": "^5.36.1",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.2.2",
+    "css-loader": "^6.2.0",
+    "eslint": "^7.31.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^3.5.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.24.0",
+    "eslint-plugin-react-native": "^3.11.0",
+    "gh-pages": "^3.2.3",
+    "html-webpack-plugin": "^5.3.2",
+    "husky": "^4.3.0",
+    "jest": "^29.7.0",
+    "lint-staged": "^11.1.1",
+    "plato": "^1.7.0",
+    "prettier": "^2.3.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-syntax-highlighter": "^15.4.4",
+    "react-test-renderer": "^17.0.2",
+    "regenerator-runtime": "^0.13.9",
+    "style-loader": "^3.2.1",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.2.2",
+    "webpack": "^5.46.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-dev-server": "^3.11.2"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && eslint . --fix"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "license": "MIT",
+  "keywords": [
+    "ai",
+    "openai",
+    "classifier",
+    "zero-shot",
+    "zero-shot-classification",
+    "natural-language-processing",
+    "machine-learning",
+    "nlp",
+    "embedding",
+    "text-classification",
+    "similarity",
+    "ai-classifier",
+    "typescript",
+    "react",
+    "vue",
+    "nodejs",
+    "deep-learning",
+    "vector-similarity",
+    "text-processing",
+    "semantic-search",
+    "groq",
+    "llama",
+    "grok",
+    "llm"
+  ],
+  "contributors": [
+    {
+      "name": "Ahmed Tarek",
+      "email": "ahmed.tokyo1@gmail.com",
+      "url": "https://github.com/A-Tokyo"
+    }
+  ]
+}
