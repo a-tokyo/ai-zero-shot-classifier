@@ -1,5 +1,3 @@
-// src/utils/euclideanDistance.test.ts
-
 import euclideanDistance from './euclideanDistance';
 
 describe('euclideanDistance', () => {

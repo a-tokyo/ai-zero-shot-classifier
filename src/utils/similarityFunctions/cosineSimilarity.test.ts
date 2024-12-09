@@ -1,5 +1,3 @@
-// src/utils/cosineSimilarity.test.ts
-
 import cosineSimilarity from './cosineSimilarity';
 
 describe('cosineSimilarity', () => {

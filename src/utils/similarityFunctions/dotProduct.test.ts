@@ -1,5 +1,3 @@
-// src/utils/dotProduct.test.ts
-
 import dotProduct from './dotProduct';
 
 describe('dotProduct', () => {

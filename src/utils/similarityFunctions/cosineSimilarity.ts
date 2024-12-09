@@ -1,5 +1,3 @@
-// src/utils/cosineSimilarity.ts
-
 /**
  * Computes the cosine similarity between two numerical vectors.
  *

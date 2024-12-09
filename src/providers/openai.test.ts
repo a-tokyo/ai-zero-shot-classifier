@@ -1,5 +1,3 @@
-// src/providers/openai.test.ts
-
 import OpenAI from 'openai';
 import openAIProvider from './openai'; // Adjust the import path if necessary
 

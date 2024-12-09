@@ -1,5 +1,3 @@
-// src/utils/__tests__/similarityFunctions.test.ts
-
 import similarityFunctions, { getSimilarityFunction } from '.';
 import cosineSimilarity from './cosineSimilarity';
 import dotProduct from './dotProduct';
