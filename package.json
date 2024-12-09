@@ -22,7 +22,7 @@
   },
   "scripts": {
     "start": "webpack serve --mode development --port 3001",
-    "transpile": "rm -rf dist &&  yarn eslint --ext .ts src && yarn tsc -p ./tsconfig.build.json && babel src -x .ts,.js --out-dir dist -s --copy-files && rm -rf dist/**/__snapshots__ && find ./dist -name '*.test.js*' -type f -delete ",
+    "transpile": "rm -rf dist && yarn eslint --ext .ts --ignore-pattern '*.test.*' src && yarn tsc -p ./tsconfig.build.json && babel src -x .ts,.js --out-dir dist -s --copy-files && rm -rf dist/**/__snapshots__ && find ./dist -name '*.test.js*' -type f -delete",
     "prepublishOnly": "npm run transpile",
     "build": "webpack --mode production",
     "deploy": "gh-pages -d demo/dist",

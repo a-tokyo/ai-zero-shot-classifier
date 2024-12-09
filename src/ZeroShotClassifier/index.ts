@@ -48,14 +48,19 @@ const _validateProvider = (provider: string) => {
 class ZeroShotClassifier {
   /** Provider used for API */
   private provider: string;
+
   /** Model used for classification */
   private model: string;
+
   /** Provider API Key */
   private apiKey: string | undefined;
+
   /** Labels to classify against */
   private labels: string[];
+
   /** Labels cache */
   private labelsCache: Record<string, number []>;
+
   /** API client */
   private client;
 
@@ -145,13 +150,13 @@ class ZeroShotClassifier {
 
     const embeddings = await pMap(
       chunks,
-      async (chunk: string[]) => {
+      async (currChunk: string[]) => {
         const response = await openAIProvider.createEmbedding(this.client, {
           model: this.model,
-          input: chunk,
+          input: currChunk,
         });
         if (type === 'label') {
-          chunk.forEach((text, index) => {
+          currChunk.forEach((text, index) => {
             this.labelsCache[text] = response[index].embedding;
           });
         }

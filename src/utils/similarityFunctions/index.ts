@@ -3,6 +3,15 @@ import dotProduct from './dotProduct';
 import euclideanDistance from './euclideanDistance';
 
 /**
+ * Similarity function mapping
+ */
+const similarityFunctions = {
+  cosine: cosineSimilarity,
+  dot: dotProduct,
+  euclidean: euclideanDistance,
+};
+
+/**
  * Get similarity function based on the similarity type
  *
  * @param similarity
@@ -14,15 +23,6 @@ const getSimilarityFunction = (similarity: 'cosine' | 'dot' | 'euclidean') => {
     throw new Error(`Invalid similarity function: "${similarity}"`);
   }
   return fn;
-};
-
-/**
- * Similarity function mapping
- */
-const similarityFunctions = {
-  cosine: cosineSimilarity,
-  dot: dotProduct,
-  euclidean: euclideanDistance,
 };
 
 export { getSimilarityFunction };

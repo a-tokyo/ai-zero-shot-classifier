@@ -19,6 +19,8 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    // disable undef rule in favor of typescript
+    'no-undef': 'off',
     'import/prefer-default-export': 'off',
     'import/no-named-as-default-member': 'off',
     'jsx-a11y/label-has-associated-control': 0,
