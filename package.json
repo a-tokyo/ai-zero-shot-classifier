@@ -1,6 +1,6 @@
 {
   "name": "ai-zero-shot-classifier",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "🧠 powerful JavaScript library that leverages advanced AI embeddings to perform zero-shot text classification. Whether you're dealing with unlabelled data or seeking to classify text against dynamic and user-defined labels, this library provides a seamless and efficient solution.",
   "author": {
     "name": "Ahmed Tarek",
