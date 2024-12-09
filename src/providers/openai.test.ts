@@ -35,6 +35,7 @@ describe('OpenAI Provider', () => {
 
       // Ensure OpenAI constructor was called with the provided API key
       expect(OpenAI).toHaveBeenCalledWith({
+        dangerouslyAllowBrowser: true,
         apiKey: 'provided-api-key',
       });
 
@@ -53,6 +54,7 @@ describe('OpenAI Provider', () => {
 
       // Ensure OpenAI constructor was called with the API key from environment variables
       expect(OpenAI).toHaveBeenCalledWith({
+        dangerouslyAllowBrowser: true,
         apiKey: 'env-api-key',
       });
 
@@ -72,6 +74,7 @@ describe('OpenAI Provider', () => {
 
       // Ensure OpenAI constructor was called with the provided API key, not the environment variable
       expect(OpenAI).toHaveBeenCalledWith({
+        dangerouslyAllowBrowser: true,
         apiKey: 'provided-api-key',
       });
 
