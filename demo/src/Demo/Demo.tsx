@@ -7,18 +7,19 @@ import classify from '../../../src/classify'; // Adjust the import path as neces
 
 function Demo() {
   // Configuration states
-  const [apiKey, setApiKey] = useState(''); // New state for API Key
-  const [provider, setProvider] = useState<'openai' | 'groq'>('openai'); // Provider selection
-  const [model, setModel] = useState('text-embedding-3-small'); // Model selection
-  const [labelsInput, setLabelsInput] = useState('Technology, Health, Finance'); // Comma-separated labels
-  const [similarity, setSimilarity] = useState('cosine'); // 'cosine', 'dot', 'euclidean'
+  const [apiKey, setApiKey] = useState('');
+  const [provider, setProvider] = useState<'openai' | 'groq'>('openai');
+  const [model, setModel] = useState('text-embedding-3-small');
+  const [labelsInput, setLabelsInput] = useState('Technology, Health, Finance');
+  const [delimiter, setDelimiter] = useState(','); // New state for delimiter
+  const [similarity, setSimilarity] = useState('cosine');
 
   // Data input state
   const [dataInput, setDataInput] = useState(
     `Artificial Intelligence is transforming industries.
 The stock market has seen unprecedented growth.
-Healthcare advancements are improving lives.`,
-  ); // Newline-separated data
+Healthcare advancements are improving lives.`
+  );
 
   // Classification result state
   const [results, setResults] = useState([]);
@@ -31,7 +32,7 @@ Healthcare advancements are improving lives.`,
   // Update the code snippet based on current configuration and input
   useEffect(() => {
     const labelsArray = labelsInput
-      .split(',')
+      .split(delimiter) // Use the selected delimiter
       .map((label) => label.trim())
       .filter((label) => label.length > 0);
 
@@ -74,7 +75,7 @@ classify({
     console.error(error);
   });
 `);
-  }, [apiKey, provider, model, labelsInput, dataInput, similarity]);
+  }, [apiKey, provider, model, labelsInput, dataInput, similarity, delimiter]);
 
   // Handle classification
   const handleClassify = async () => {
@@ -83,7 +84,7 @@ classify({
     setResults([]);
 
     const labels = labelsInput
-      .split(',')
+      .split(delimiter) // Use the selected delimiter
       .map((label) => label.trim())
       .filter((label) => label.length > 0);
 
@@ -120,7 +121,6 @@ classify({
         apiKey,
       });
 
-      // Combine each data item with its classification result
       const combinedResults = data.map((text, index) => ({
         text,
         label: classificationResults[index]?.label || 'N/A',
@@ -175,13 +175,23 @@ classify({
             />
           </div>
           <div className="config-group">
-            <label htmlFor="labels">Labels (comma-separated):</label>
+            <label htmlFor="labels">Labels:</label>
             <input
               type="text"
               id="labels"
               placeholder="e.g., Technology, Health, Finance"
               value={labelsInput}
               onChange={(e) => setLabelsInput(e.target.value)}
+            />
+          </div>
+          <div className="config-group">
+            <label htmlFor="delimiter">Labels Delimiter:</label>
+            <input
+              type="text"
+              id="delimiter"
+              placeholder="e.g., , or ;"
+              value={delimiter}
+              onChange={(e) => setDelimiter(e.target.value)}
             />
           </div>
           <div className="config-group">
