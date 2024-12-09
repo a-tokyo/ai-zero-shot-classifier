@@ -55,13 +55,18 @@ const data = [
 
 /** Configuration (optional) */
 const config = {
-  provider: '${provider}',
-  model: '${model}',
   similarity: '${similarity}',
 };
 
 /** Perform classification */
-classify({ labels, data, config, apiKey })
+classify({
+  provider: '${provider}',
+  model: '${model}',
+  labels,
+  data,
+  config,
+  apiKey
+})
   .then((results) => {
     console.log(results);
   })
