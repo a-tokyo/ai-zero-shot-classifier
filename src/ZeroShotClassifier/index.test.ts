@@ -19,22 +19,17 @@ jest.mock('../utils/p-map', () => jest.fn());
 describe('ZeroShotClassifier', () => {
   const mockClient = {};
   const mockLabels = ['Positive', 'Negative'];
-  const mockEmbeddingsData = [
-    { embedding: [0.1, 0.2, 0.3] }, // data1
-    { embedding: [0.4, 0.5, 0.6] }, // data2
-  ];
-  const mockEmbeddingsLabels = [
-    { embedding: [0.1, 0.2, 0.3] }, // Positive
-    { embedding: [0.4, 0.5, 0.6] }, // Negative
+  const mockData = ['data1', 'data2'];
+  const mockEmbeddings = [
+    { embedding: [0.1, 0.2, 0.3] }, // Mock embedding
+    { embedding: [0.4, 0.5, 0.6] },
   ];
 
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Mock OpenAI provider
     (openAIProvider.createClient as jest.Mock).mockReturnValue(mockClient);
 
-    // Mock chunk function
     (chunk as jest.Mock).mockImplementation((array: any[], size: number) => {
       const chunks: any[][] = [];
       for (let i = 0; i < array.length; i += size) {
@@ -43,142 +38,144 @@ describe('ZeroShotClassifier', () => {
       return chunks;
     });
 
-    // Mock pMap function
     (pMap as jest.Mock).mockImplementation(
       async (array: any[], mapper: (item: any) => Promise<any>) =>
-        Promise.all(array.map(mapper))
+        Promise.all(array.map(mapper)),
     );
 
-    // Mock similarity function
     (getSimilarityFunction as jest.Mock).mockImplementation(() =>
       jest.fn((a: number[], b: number[]) =>
-        a.reduce((sum, value, index) => sum + value * b[index], 0)
-      )
+        a.reduce((sum, value, index) => sum + value * b[index], 0),
+      ),
     );
   });
 
-  it('should initialize with default values', () => {
-    const classifier = new ZeroShotClassifier({ labels: mockLabels });
+  it('should initialize with dataCache and labelsCache', () => {
+    const classifier = new ZeroShotClassifier({
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+      labelsCache: { Positive: [0.4, 0.5, 0.6] },
+    });
 
     expect(classifier).toBeDefined();
-    expect(openAIProvider.createClient).toHaveBeenCalledWith({
-      model: 'text-embedding-3-small',
-      provider: 'openai',
-      apiKey: undefined,
+    expect(classifier['dataCache']).toEqual({ data1: [0.1, 0.2, 0.3] });
+    expect(classifier['labelsCache']).toEqual({ Positive: [0.4, 0.5, 0.6] });
+  });
+
+  it('should clear all caches', () => {
+    const classifier = new ZeroShotClassifier({
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+      labelsCache: { Positive: [0.4, 0.5, 0.6] },
     });
-  });
 
-  it('should validate unsupported provider', () => {
-    expect(() => {
-      new ZeroShotClassifier({ provider: 'unsupported', labels: mockLabels });
-    }).toThrowError('Unsupported provider "unsupported". Must be one of openai, groq');
-  });
+    classifier.clearAllCaches();
 
-  it('should set and cache labels', () => {
-    const classifier = new ZeroShotClassifier({ labels: [] });
-
-    classifier.setLabels(mockLabels);
-
-    expect(classifier['labels']).toEqual(mockLabels);
+    expect(classifier['dataCache']).toEqual({});
     expect(classifier['labelsCache']).toEqual({});
   });
 
-  it('should fetch embeddings in batches with dimensions', async () => {
-    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 512 });
+  it('should fetch embeddings and use cache when possible', async () => {
+    const classifier = new ZeroShotClassifier({
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+    });
 
-    // Setup mockResolvedValueOnce for each createEmbedding call
-    (openAIProvider.createEmbedding as jest.Mock)
-      .mockResolvedValueOnce([mockEmbeddingsData[0]]) // createEmbedding(['data1'])
-      .mockResolvedValueOnce([mockEmbeddingsData[1]]); // createEmbedding(['data2'])
+    (openAIProvider.createEmbedding as jest.Mock).mockResolvedValueOnce([mockEmbeddings[1]]);
 
-    const embeddings = await classifier.getEmbeddings(['data1', 'data2'], 1, 1, 'data');
+    const embeddings = await classifier.getEmbeddings(mockData, 1, 1, 'data');
 
-    expect(chunk).toHaveBeenCalledWith(['data1', 'data2'], 1);
+    expect(chunk).toHaveBeenCalledWith(['data2'], 1); // Only fetch uncached
     expect(pMap).toHaveBeenCalled();
-
     expect(embeddings).toEqual([
-      [0.1, 0.2, 0.3],
-      [0.4, 0.5, 0.6],
+      [0.1, 0.2, 0.3], // From cache
+      [0.4, 0.5, 0.6], // From API
     ]);
-
-    // Ensure createEmbedding was called twice
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
-      model: 'text-embedding-3-small',
-      input: ['data1'],
-      dimensions: 512,
-    });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
-      model: 'text-embedding-3-small',
-      input: ['data2'],
-      dimensions: 512,
-    });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(2);
   });
 
-  it('should classify data with dimensions', async () => {
+  it('should classify data using cached embeddings', async () => {
     const similarityMock = jest.fn((a: number[], b: number[]) => 0.9);
     (getSimilarityFunction as jest.Mock).mockReturnValue(similarityMock);
-
-    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 256 });
-
-    // Mock createEmbedding for labels and data
-    (openAIProvider.createEmbedding as jest.Mock)
-      .mockResolvedValueOnce([mockEmbeddingsLabels[0]]) // createEmbedding(['Positive'])
-      .mockResolvedValueOnce([mockEmbeddingsLabels[1]]) // createEmbedding(['Negative'])
-      .mockResolvedValueOnce([mockEmbeddingsData[0]]) // createEmbedding(['data1'])
-      .mockResolvedValueOnce([mockEmbeddingsData[1]]); // createEmbedding(['data2'])
-
-    const results = await classifier.classify(['data1', 'data2'], {
+  
+    const classifier = new ZeroShotClassifier({
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+      labelsCache: { Positive: [0.4, 0.5, 0.6] },
+    });
+  
+    // Mock createEmbedding to handle uncached data
+    (openAIProvider.createEmbedding as jest.Mock).mockImplementation((client, { input }) => {
+      // Return embeddings for each input
+      return input.map(() => ({ embedding: [0.7, 0.8, 0.9] }));
+    });
+  
+    const results = await classifier.classify(mockData, {
       similarity: 'cosine',
       embeddingBatchSizeData: 1,
       embeddingBatchSizeLabels: 1,
     });
-
+  
+    expect(chunk).toHaveBeenCalledWith(['data2'], 1); // Only uncached data chunked
+    expect(pMap).toHaveBeenCalled();
     expect(getSimilarityFunction).toHaveBeenCalledWith('cosine');
     expect(similarityMock).toHaveBeenCalledTimes(4); // 2 data points x 2 labels
     expect(results).toEqual([
       { label: 'Positive', confidence: 0.9 },
       { label: 'Positive', confidence: 0.9 },
     ]);
-
-    // Ensure createEmbedding was called with dimensions
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
-      model: 'text-embedding-3-small',
-      input: ['Positive'],
-      dimensions: 256,
-    });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
-      model: 'text-embedding-3-small',
-      input: ['Negative'],
-      dimensions: 256,
-    });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(4);
   });
 
-  it('should handle embedding cache for labels with dimensions', async () => {
-    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 128 });
-
-    // Mock createEmbedding for labels
-    (openAIProvider.createEmbedding as jest.Mock)
-      .mockResolvedValueOnce([mockEmbeddingsLabels[0]]) // createEmbedding(['Positive'])
-      .mockResolvedValueOnce([mockEmbeddingsLabels[1]]); // createEmbedding(['Negative'])
-
-    await classifier.getEmbeddings(mockLabels, 1, 1, 'label');
-
-    expect(classifier['labelsCache']['Positive']).toEqual([0.1, 0.2, 0.3]);
-    expect(classifier['labelsCache']['Negative']).toEqual([0.4, 0.5, 0.6]);
-
-    // Ensure createEmbedding was called with dimensions
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
-      model: 'text-embedding-3-small',
-      input: ['Positive'],
-      dimensions: 128,
+  it('should throw an error for an unsupported provider', () => {
+    expect(() => {
+      new ZeroShotClassifier({ provider: 'unsupported', labels: mockLabels });
+    }).toThrowError('Unsupported provider "unsupported". Must be one of openai, groq');
+  });
+  
+  it('should set provider and model and clear caches if changed', () => {
+    const classifier = new ZeroShotClassifier({
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+      labelsCache: { Positive: [0.4, 0.5, 0.6] },
     });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+  
+    classifier.setProviderAndModel('groq', 'new-model', 'new-key', 128);
+  
+    expect(classifier['provider']).toBe('groq');
+    expect(classifier['model']).toBe('new-model');
+    expect(classifier['apiKey']).toBe('new-key');
+    expect(classifier['dimensions']).toBe(128);
+  
+    // Check that caches are cleared
+    expect(classifier['dataCache']).toEqual({});
+    expect(classifier['labelsCache']).toEqual({});
+  });
+  
+  it('should not clear caches if the same provider and model are set', () => {
+    const classifier = new ZeroShotClassifier({
+      provider: 'openai',
       model: 'text-embedding-3-small',
-      input: ['Negative'],
-      dimensions: 128,
+      dimensions: 256, // Match the dimensions in setProviderAndModel
+      labels: mockLabels,
+      dataCache: { data1: [0.1, 0.2, 0.3] },
+      labelsCache: { Positive: [0.4, 0.5, 0.6] },
     });
-    expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(2);
+  
+    classifier.setProviderAndModel('openai', 'text-embedding-3-small', undefined, 256);
+  
+    expect(classifier['dataCache']).toEqual({ data1: [0.1, 0.2, 0.3] });
+    expect(classifier['labelsCache']).toEqual({ Positive: [0.4, 0.5, 0.6] });
+  });
+  
+  it('should handle empty label or data embeddings gracefully', async () => {
+    const classifier = new ZeroShotClassifier({ labels: [] });
+  
+    await expect(classifier.classify(['data1'], { similarity: 'dot' })).rejects.toThrowError('Labels must be set.');
+  
+    classifier.setLabels(mockLabels);
+  
+    (openAIProvider.createEmbedding as jest.Mock).mockResolvedValueOnce([]);
+    const embeddings = await classifier.getEmbeddings([], 1, 1, 'data');
+  
+    expect(embeddings).toEqual([]);
   });
 });

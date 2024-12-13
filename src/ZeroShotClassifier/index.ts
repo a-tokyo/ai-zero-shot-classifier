@@ -11,13 +11,13 @@ interface ClassifyConfig {
   embeddingBatchSizeData?: number;
   /** Embedding batch size for labels, defaults to 50 */
   embeddingBatchSizeLabels?: number;
-  /** Embedding batch size for data, defaults to 5 */
+  /** Embedding concurrency for data, defaults to 5 */
   embeddingConcurrencyData?: number;
-  /** Embedding batch size for labels, defaults to 5 */
+  /** Embedding concurrency for labels, defaults to 5 */
   embeddingConcurrencyLabels?: number;
-  /** Comparing batch size for top level, defaults to 10 */
+  /** Comparing concurrency for top level, defaults to 10 */
   comparingConcurrencyTop?: number;
-  /** Comparing batch size for bottom level, defaults to 10 */
+  /** Comparing concurrency for bottom level, defaults to 10 */
   comparingConcurrencyBottom?: number;
 }
 
@@ -35,9 +35,7 @@ const SUPPORTED_PROVIDERS = ['openai', 'groq'];
 const _validateProvider = (provider: string) => {
   if (!SUPPORTED_PROVIDERS.includes(provider)) {
     throw new Error(
-      `Unsupported provider "${provider}". Must be one of ${SUPPORTED_PROVIDERS.join(
-        ', ',
-      )}`,
+      `Unsupported provider "${provider}". Must be one of ${SUPPORTED_PROVIDERS.join(', ')}`,
     );
   }
 };
@@ -62,7 +60,10 @@ class ZeroShotClassifier {
   private dimensions: number | undefined;
 
   /** Labels cache */
-  private labelsCache: Record<string, number []>;
+  private labelsCache: Record<string, number[]>;
+
+  /** Data cache */
+  private dataCache: Record<string, number[]>;
 
   /** API client */
   private client;
@@ -74,12 +75,14 @@ class ZeroShotClassifier {
     model?: string;
     /** Provider API Key */
     apiKey?: string;
-    /** Labels to classify against, can be provider later via setLabels */
-    labels: string[]; // labels to classify against
+    /** Labels to classify against, can be provided later via setLabels */
+    labels: string[];
     /** Dimensions used for embeddings */
     dimensions?: number;
     /** Labels cache */
-    labelsCache?: Record<string, number []>; // labelsCache object
+    labelsCache?: Record<string, number[]>;
+    /** Data cache */
+    dataCache?: Record<string, number[]>;
   }) {
     const {
       model = 'text-embedding-3-small',
@@ -88,6 +91,7 @@ class ZeroShotClassifier {
       labels = [],
       dimensions,
       labelsCache = {},
+      dataCache = {},
     } = config;
     _validateProvider(provider);
     this.model = model;
@@ -96,6 +100,7 @@ class ZeroShotClassifier {
     this.labels = labels || [];
     this.dimensions = dimensions;
     this.labelsCache = labelsCache || {};
+    this.dataCache = dataCache || {};
 
     this._createAndSetClient({ model, provider, apiKey });
   }
@@ -135,7 +140,7 @@ class ZeroShotClassifier {
 
     // clear cache if provider or model changes
     if (provider !== this.provider || model !== this.model || dimensions !== this.dimensions) {
-      this.labelsCache = {};
+      this.clearAllCaches();
     }
 
     this.provider = provider;
@@ -159,7 +164,9 @@ class ZeroShotClassifier {
     concurrency: number,
     type: 'label' | 'data' = 'data',
   ): Promise<number[][]> {
-    const chunks = chunk(texts, batchSize);
+    const cache = type === 'label' ? this.labelsCache : this.dataCache;
+    const uncachedTexts = texts.filter((text) => !cache[text]);
+    const chunks = chunk(uncachedTexts, batchSize);
 
     const embeddings = await pMap(
       chunks,
@@ -169,17 +176,38 @@ class ZeroShotClassifier {
           input: currChunk,
           dimensions: this.dimensions,
         });
-        if (type === 'label') {
-          currChunk.forEach((text, index) => {
-            this.labelsCache[text] = response[index].embedding;
-          });
-        }
+        currChunk.forEach((text, index) => {
+          cache[text] = response[index].embedding;
+        });
         return response.map((r) => r.embedding);
       },
       { concurrency },
     );
 
-    return embeddings.flat();
+    // Return cached embeddings combined with the new ones
+    return texts.map((text) => cache[text]);
+  }
+
+  /**
+   * Clear cache for data embeddings
+   */
+  clearDataCache(): void {
+    this.dataCache = {};
+  }
+
+  /**
+   * Clear cache for label embeddings
+   */
+  clearLabelsCache(): void {
+    this.labelsCache = {};
+  }
+
+  /**
+   * Clear all caches
+   */
+  clearAllCaches(): void {
+    this.clearDataCache();
+    this.clearLabelsCache();
   }
 
   /**
@@ -211,30 +239,31 @@ class ZeroShotClassifier {
       comparingConcurrencyTop = 10,
       comparingConcurrencyBottom = 10,
     } = config;
-  
+
     // Parallel embedding computation for labels and data
     const [labelsEmbeddings, dataEmbeddings] = await Promise.all([
       this.getEmbeddings(this.labels, embeddingBatchSizeLabels, embeddingConcurrencyLabels, 'label'),
       this.getEmbeddings(data, embeddingBatchSizeData, embeddingConcurrencyData, 'data'),
     ]);
-  
+
     /** similarity getter function */
     const getSimilarity = getSimilarityFunction(similarity);
-  
-    const result: { label: string, confidence: number }[] = await pMap(
+
+    const result: { label: string; confidence: number }[] = await pMap(
       dataEmbeddings,
       async (dataEmbedding) => {
         const similarities = await pMap(
           labelsEmbeddings,
-          async (labelEmbedding): Promise<number> => getSimilarity(dataEmbedding, labelEmbedding),
+          async (labelEmbedding): Promise<number> =>
+            getSimilarity(dataEmbedding, labelEmbedding),
           { concurrency: comparingConcurrencyBottom },
         );
-  
+
         // find closest label based on similarity
         const bestIndex = similarities.indexOf(
           Math[similarity === 'euclidean' ? 'min' : 'max'](...similarities),
         );
-  
+
         return {
           label: this.labels[bestIndex],
           confidence: similarities[bestIndex], // Include confidence score
