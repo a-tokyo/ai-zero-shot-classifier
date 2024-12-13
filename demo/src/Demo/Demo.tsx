@@ -13,6 +13,7 @@ function Demo() {
   const [labelsInput, setLabelsInput] = useState('Technology, Health, Finance');
   const [delimiter, setDelimiter] = useState(','); // New state for delimiter
   const [similarity, setSimilarity] = useState('cosine');
+  const [dimensions, setDimensions] = useState<number | ''>(''); // New state for dimensions
 
   // Data input state
   const [dataInput, setDataInput] = useState(
@@ -57,6 +58,7 @@ const data = [
 /** Configuration (optional) */
 const config = {
   similarity: '${similarity}',
+  ${dimensions ? `dimensions: ${dimensions},` : ''}
 };
 
 /** Perform classification */
@@ -66,7 +68,8 @@ classify({
   labels,
   data,
   config,
-  apiKey
+  apiKey,
+  ${dimensions ? `dimensions: ${dimensions},` : ''}
 })
   .then((results) => {
     console.log(results);
@@ -75,7 +78,7 @@ classify({
     console.error(error);
   });
 `);
-  }, [apiKey, provider, model, labelsInput, dataInput, similarity, delimiter]);
+  }, [apiKey, provider, model, labelsInput, dataInput, similarity, delimiter, dimensions]);
 
   // Handle classification
   const handleClassify = async () => {
@@ -119,6 +122,7 @@ classify({
         model,
         config: { similarity },
         apiKey,
+        dimensions: dimensions || undefined, // Pass dimensions if provided
       });
 
       const combinedResults = data.map((text, index) => ({
@@ -204,6 +208,16 @@ classify({
               <option value="dot">Dot Product</option>
               <option value="euclidean">Euclidean Distance</option>
             </select>
+          </div>
+          <div className="config-group">
+            <label htmlFor="dimensions">Dimensions (optional):</label>
+            <input
+              type="number"
+              id="dimensions"
+              placeholder="Dimensions for embeddings e.g., 512. Defaults to model's default."
+              value={dimensions}
+              onChange={(e) => setDimensions(e.target.value ? Number(e.target.value) : '')}
+            />
           </div>
         </section>
 

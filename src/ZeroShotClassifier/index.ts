@@ -58,6 +58,9 @@ class ZeroShotClassifier {
   /** Labels to classify against */
   private labels: string[];
 
+  /** Dimensions used for embeddings */
+  private dimensions: number | undefined;
+
   /** Labels cache */
   private labelsCache: Record<string, number []>;
 
@@ -73,6 +76,8 @@ class ZeroShotClassifier {
     apiKey?: string;
     /** Labels to classify against, can be provider later via setLabels */
     labels: string[]; // labels to classify against
+    /** Dimensions used for embeddings */
+    dimensions?: number;
     /** Labels cache */
     labelsCache?: Record<string, number []>; // labelsCache object
   }) {
@@ -81,6 +86,7 @@ class ZeroShotClassifier {
       provider = 'openai',
       apiKey,
       labels = [],
+      dimensions,
       labelsCache = {},
     } = config;
     _validateProvider(provider);
@@ -88,6 +94,7 @@ class ZeroShotClassifier {
     this.provider = provider;
     this.apiKey = apiKey;
     this.labels = labels || [];
+    this.dimensions = dimensions;
     this.labelsCache = labelsCache || {};
 
     this._createAndSetClient({ model, provider, apiKey });
@@ -122,17 +129,19 @@ class ZeroShotClassifier {
     provider: string = 'openai',
     model: string,
     apiKey?: string,
+    dimensions?: number,
   ): void {
     _validateProvider(provider);
 
     // clear cache if provider or model changes
-    if (provider !== this.provider || model !== this.model) {
+    if (provider !== this.provider || model !== this.model || dimensions !== this.dimensions) {
       this.labelsCache = {};
     }
 
     this.provider = provider;
     this.model = model;
     this.apiKey = apiKey;
+    this.dimensions = dimensions;
 
     this._createAndSetClient({
       model: this.model,
@@ -158,6 +167,7 @@ class ZeroShotClassifier {
         const response = await (getProvider(this.provider)).createEmbedding(this.client, {
           model: this.model,
           input: currChunk,
+          dimensions: this.dimensions,
         });
         if (type === 'label') {
           currChunk.forEach((text, index) => {

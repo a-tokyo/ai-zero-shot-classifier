@@ -15,7 +15,7 @@ describe('classify', () => {
     jest.clearAllMocks();
   });
 
-  it('creates a new ZeroShotClassifier with the correct configuration', async () => {
+  it('creates a new ZeroShotClassifier with the correct configuration including dimensions', async () => {
     const input = {
       labels: ['Positive', 'Negative'],
       data: ['I love this product!', 'This is bad.'],
@@ -24,6 +24,7 @@ describe('classify', () => {
       },
       model: 'text-embedding-3-small',
       provider: 'openai',
+      dimensions: 512,
     };
 
     mockClassify.mockResolvedValue([
@@ -37,6 +38,7 @@ describe('classify', () => {
       model: 'text-embedding-3-small',
       provider: 'openai',
       labels: ['Positive', 'Negative'],
+      dimensions: 512,
     });
     expect(mockClassify).toHaveBeenCalledWith(['I love this product!', 'This is bad.'], {
       similarity: 'cosine',
@@ -47,7 +49,7 @@ describe('classify', () => {
     ]);
   });
 
-  it('handles classification with default configuration', async () => {
+  it('handles classification with default configuration and no dimensions', async () => {
     const input = {
       labels: ['Positive', 'Negative'],
       data: ['This is amazing!', 'Awful experience.'],
@@ -81,13 +83,14 @@ describe('classify', () => {
     await expect(classify(input)).rejects.toThrow('Classification failed');
   });
 
-  it('passes additional configuration parameters to ZeroShotClassifier', async () => {
+  it('passes additional configuration parameters including dimensions to ZeroShotClassifier', async () => {
     const input = {
       labels: ['Spam', 'Ham'],
       data: ['Buy now!', 'How are you?'],
       model: 'text-embedding-2',
       provider: 'mock-provider',
       apiKey: 'mock-api-key',
+      dimensions: 256,
       config: {
         similarity: 'dot' as 'dot',
       },
@@ -105,6 +108,7 @@ describe('classify', () => {
       model: 'text-embedding-2',
       provider: 'mock-provider',
       apiKey: 'mock-api-key',
+      dimensions: 256,
     });
     expect(mockClassify).toHaveBeenCalledWith(['Buy now!', 'How are you?'], {
       similarity: 'dot',

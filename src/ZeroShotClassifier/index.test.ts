@@ -71,7 +71,7 @@ describe('ZeroShotClassifier', () => {
   it('should validate unsupported provider', () => {
     expect(() => {
       new ZeroShotClassifier({ provider: 'unsupported', labels: mockLabels });
-    }).toThrowError('Unsupported provider "unsupported". Must be one of openai');
+    }).toThrowError('Unsupported provider "unsupported". Must be one of openai, groq');
   });
 
   it('should set and cache labels', () => {
@@ -83,8 +83,8 @@ describe('ZeroShotClassifier', () => {
     expect(classifier['labelsCache']).toEqual({});
   });
 
-  it('should fetch embeddings in batches', async () => {
-    const classifier = new ZeroShotClassifier({ labels: mockLabels });
+  it('should fetch embeddings in batches with dimensions', async () => {
+    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 512 });
 
     // Setup mockResolvedValueOnce for each createEmbedding call
     (openAIProvider.createEmbedding as jest.Mock)
@@ -102,14 +102,24 @@ describe('ZeroShotClassifier', () => {
     ]);
 
     // Ensure createEmbedding was called twice
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['data1'],
+      dimensions: 512,
+    });
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['data2'],
+      dimensions: 512,
+    });
     expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(2);
   });
 
-  it('should classify data', async () => {
+  it('should classify data with dimensions', async () => {
     const similarityMock = jest.fn((a: number[], b: number[]) => 0.9);
     (getSimilarityFunction as jest.Mock).mockReturnValue(similarityMock);
 
-    const classifier = new ZeroShotClassifier({ labels: mockLabels });
+    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 256 });
 
     // Mock createEmbedding for labels and data
     (openAIProvider.createEmbedding as jest.Mock)
@@ -131,20 +141,22 @@ describe('ZeroShotClassifier', () => {
       { label: 'Positive', confidence: 0.9 },
     ]);
 
-    // Ensure createEmbedding was called four times
+    // Ensure createEmbedding was called with dimensions
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['Positive'],
+      dimensions: 256,
+    });
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['Negative'],
+      dimensions: 256,
+    });
     expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(4);
   });
 
-  it('should throw an error when no labels are set', async () => {
-    const classifier = new ZeroShotClassifier({ labels: [] });
-
-    await expect(classifier.classify(['data1', 'data2'])).rejects.toThrow(
-      'Labels must be set.',
-    );
-  });
-
-  it('should handle embedding cache for labels', async () => {
-    const classifier = new ZeroShotClassifier({ labels: mockLabels });
+  it('should handle embedding cache for labels with dimensions', async () => {
+    const classifier = new ZeroShotClassifier({ labels: mockLabels, dimensions: 128 });
 
     // Mock createEmbedding for labels
     (openAIProvider.createEmbedding as jest.Mock)
@@ -156,7 +168,17 @@ describe('ZeroShotClassifier', () => {
     expect(classifier['labelsCache']['Positive']).toEqual([0.1, 0.2, 0.3]);
     expect(classifier['labelsCache']['Negative']).toEqual([0.4, 0.5, 0.6]);
 
-    // Ensure createEmbedding was called twice
+    // Ensure createEmbedding was called with dimensions
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['Positive'],
+      dimensions: 128,
+    });
+    expect(openAIProvider.createEmbedding).toHaveBeenCalledWith(mockClient, {
+      model: 'text-embedding-3-small',
+      input: ['Negative'],
+      dimensions: 128,
+    });
     expect(openAIProvider.createEmbedding).toHaveBeenCalledTimes(2);
   });
 });

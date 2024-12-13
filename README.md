@@ -93,9 +93,10 @@ const data = [
 // Create an instance of the classifier
 const classifier = new ZeroShotClassifier({
   provider: 'openai', // Specify the provider
-  model: 'text-embedding-ada-002', // Specify the model
+  model: 'text-embedding-3-small', // Specify the model
   apiKey: 'your-api-key', // API key for authentication
   labels, // Provide labels for classification
+  dimensions: undefined, // Pass dimensions as a number here to configure vector dimensions
 });
 
 (async () => {
