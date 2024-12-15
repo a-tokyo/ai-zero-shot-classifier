@@ -168,7 +168,7 @@ class ZeroShotClassifier {
     const uncachedTexts = texts.filter((text) => !cache[text]);
     const chunks = chunk(uncachedTexts, batchSize);
 
-    const embeddings = await pMap(
+    await pMap(
       chunks,
       async (currChunk: string[]) => {
         const response = await (getProvider(this.provider)).createEmbedding(this.client, {
