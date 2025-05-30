@@ -58,6 +58,7 @@ export default function RootLayout({
         className="antialiased"
       >
         {children}
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5266987079964279" crossorigin="anonymous"></script>
       </body>
     </html>
   );
