@@ -1,16 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   title: "ai-zero-shot-classifier",
@@ -22,14 +12,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: "https://ai-zero-shot-classifier.ahmedtokyo.com/",
+    url: "https://ai-zero-shot-classifier.ahmedtokyo.com",
     title: "AI Zero Shot Classifier",
     description: "AI Zero Shot Classifier",
     images: ["/cover.webp"],
   },
   twitter: {
     card: "summary_large_image",
-    site: "https://ai-zero-shot-classifier.ahmedtokyo.com/",
+    site: "https://ai-zero-shot-classifier.ahmedtokyo.com",
     title: "AI Zero Shot Classifier",
     description: "AI Zero Shot Classifier",
     images: ["/cover.webp"],
@@ -65,7 +55,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="antialiased"
       >
         {children}
       </body>

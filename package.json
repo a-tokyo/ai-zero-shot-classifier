@@ -21,12 +21,13 @@
     "url": "https://github.com/a-tokyo/ai-zero-shot-classifier/issues"
   },
   "scripts": {
-    "start": "webpack serve --mode development --port 3001",
+    "start": "cd demo && npm run dev",
     "transpile": "rm -rf dist && yarn eslint --ext .ts --ignore-pattern '*.test.*' src && yarn tsc -p ./tsconfig.build.json && babel src -x .ts,.js --out-dir dist -s --copy-files && rm -rf dist/**/__snapshots__ && find ./dist -name '*.test.js*' -type f -delete",
     "prepublishOnly": "npm run transpile",
-    "build": "webpack --mode production",
+    "build": "cd demo && npm run build && cd ..",
     "deploy": "gh-pages -d demo/dist",
     "publish-demo": "npm run build && npm run deploy",
+    "postinstall": "cd demo && npm install && cd ..",
     "babel-node": "babel-node -x .ts,.tsx,.js,.jsx",
     "test": "jest"
   },
