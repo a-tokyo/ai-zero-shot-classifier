@@ -152,7 +152,7 @@ classify({
   return (
     <article className="wrapper">
       <header>
-        <h1>AI Zero-Shot Classifier Demo</h1>
+        <h1>AI Zero-Shot Classifier</h1>
         <p>Classify text data against predefined labels using AI-powered embeddings.</p>
       </header>
       <div className="desktop-layout">
