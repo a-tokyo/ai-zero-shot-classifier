@@ -186,6 +186,12 @@ footer a:hover {
   display: flex;
   justify-content: center;
   text-align: center;
+  &.mobile-only {
+    margin: 0;
+    @media (min-width: 768px) {
+      display: none;
+    }
+  }
 }
 
 /* SEO Content Section */

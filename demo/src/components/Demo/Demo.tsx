@@ -163,6 +163,11 @@ classify({
         
         {/* Main Content */}
         <div className="container main-content">
+          {/* Mobile Ad - Above Configuration */}
+          <div className="center-ad-container mobile-only">
+            <GoogleAd slot="2836515895" variant="center" />
+          </div>
+
           <section className="config-section">
             <h2>Configuration</h2>
             <div className="config-group">
