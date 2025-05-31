@@ -159,15 +159,14 @@ footer a:hover {
   display: none;
 }
 
-/* Show ads only on desktop (screens larger than 1200px) */
-@media (min-width: 1200px) {
+@media (min-width: 768px) {
   .desktop-only {
     display: block;
   }
 }
 
 /* Responsive adjustments */
-@media (max-width: 1199px) {
+@media (max-width: 767px) {
   .desktop-layout {
     flex-direction: column;
   }
@@ -180,9 +179,7 @@ footer a:hover {
 /* Center Ad Containers */
 .center-ad-container {
   width: 100%;
-  /* max-width: 1200px; */
   margin: 40px auto;
-  /* padding: 0 20px; */
   display: flex;
   justify-content: center;
   text-align: center;
@@ -203,7 +200,7 @@ footer a:hover {
 }
 
 .seo-container {
-  max-width: 1200px;
+  /* max-width: 1200px; */
   margin: 0 auto;
   padding: 0 20px;
 }
