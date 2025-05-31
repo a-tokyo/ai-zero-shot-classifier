@@ -27,7 +27,7 @@
     "build": "cd demo && npm run build && cd ..",
     "deploy": "gh-pages -d demo/dist",
     "publish-demo": "npm run build && npm run deploy",
-    "postinstall": "cd demo && npm install && cd ..",
+    "postinstall": "cd demo && (test -f package-lock.json && npm ci || npm install) && cd ..",
     "babel-node": "babel-node -x .ts,.tsx,.js,.jsx",
     "test": "jest"
   },
