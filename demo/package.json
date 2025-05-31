@@ -1,7 +1,13 @@
 {
-  "name": "demo",
+  "name": "@ahmedtokyo/ai-zero-shot-classifier",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Ahmed Tarek",
+    "email": "ahmed.tokyo1@gmail.com",
+    "url": "https://github.com/A-Tokyo"
+  },
+  "homepage": "https://ai-zero-shot-classifier.ahmedtokyo.com",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

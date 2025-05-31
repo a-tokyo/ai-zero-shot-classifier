@@ -490,6 +490,9 @@ const classifier = new ZeroShotClassifier({
           <span role="img" aria-label="love">❤️</span>{' '}
           by <a href="https://ahmedtokyo.com">Ahmed Tokyo</a>
         </p>
+        <p>
+          <a href="https://github.com/a-tokyo/ai-zero-shot-classifier">Source Code on GitHub</a>
+        </p>
       </footer>
     </article>
   );
