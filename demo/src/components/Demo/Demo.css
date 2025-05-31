@@ -5,7 +5,7 @@
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
-  color: #333;
+  color: var(--foreground);
 }
 
 header {
@@ -20,10 +20,10 @@ header {
 }
 
 section {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   padding: 20px;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--section-background);
 }
 
 .config-group,
@@ -44,9 +44,10 @@ input[type='number'],
 select,
 textarea {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-input);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--input-background);
+  color: var(--foreground);
   font-size: 14px;
 }
 
@@ -66,7 +67,7 @@ textarea {
 
 button {
   padding: 12px 20px;
-  background-color: #007bff;
+  background-color: var(--button-primary);
   color: white;
   border: none;
   border-radius: 4px;
@@ -76,16 +77,16 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--button-primary-hover);
 }
 
 button:disabled {
-  background-color: #6c757d;
+  background-color: var(--button-disabled);
   cursor: not-allowed;
 }
 
 .error {
-  color: red;
+  color: var(--error-color);
   margin-top: 10px;
 }
 
@@ -96,7 +97,7 @@ button:disabled {
 
 .results-section li {
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .results-section li:last-child {
@@ -111,22 +112,22 @@ button:disabled {
 .code-ui {
   max-height: 400px;
   overflow: auto;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   padding: 10px;
-  background-color: #1e1e1e;
+  background-color: var(--code-background);
   color: #fff;
 }
 
 footer {
   text-align: center;
   margin-top: 40px;
-  color: #777;
+  color: var(--text-muted);
   font-size: 14px;
 }
 
 footer a {
-  color: #007bff;
+  color: var(--button-primary);
   text-decoration: none;
 }
 
@@ -195,8 +196,8 @@ footer a:hover {
 .seo-content {
   margin: 60px 0 40px 0;
   padding: 40px 0;
-  background-color: #f8f9fa;
-  border-top: 1px solid #e9ecef;
+  background-color: var(--seo-background);
+  border-top: 1px solid var(--seo-border);
 }
 
 .seo-container {
@@ -212,19 +213,19 @@ footer a:hover {
 .seo-section {
   margin-bottom: 40px;
   padding: 30px;
-  background-color: white;
+  background-color: var(--seo-card-background);
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px var(--seo-card-shadow);
 }
 
 .seo-section h3 {
   margin-bottom: 20px;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid var(--heading-accent);
   padding-bottom: 10px;
 }
 
 .seo-section p {
-  color: #2c3e50;
+  color: var(--foreground);
   line-height: 1.7;
   font-size: 16px;
   margin-bottom: 16px;
@@ -273,7 +274,7 @@ footer a:hover {
 
 /* Base Typography */
 h1, h2, h3, h4, h5, h6 {
-  color: #2c3e50;
+  color: var(--foreground);
   font-weight: 600;
   line-height: 1.2;
   margin-bottom: 0.5em;
