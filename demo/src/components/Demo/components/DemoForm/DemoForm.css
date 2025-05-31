@@ -1,17 +1,4 @@
-/* src/components/Demo.css */
-
-.wrapper {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-  font-family: Arial, sans-serif;
-  color: #333;
-}
-
-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
+/* DemoForm specific styles */
 
 .container {
   display: flex;
@@ -20,10 +7,10 @@ header {
 }
 
 section {
-  border: 1px solid #ddd;
+  border: 1px solid var(--border);
   padding: 20px;
   border-radius: 8px;
-  background-color: #f9f9f9;
+  background-color: var(--background-elevated);
 }
 
 .config-group,
@@ -44,9 +31,10 @@ input[type='number'],
 select,
 textarea {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border);
   border-radius: 4px;
-  background-color: #fff;
+  background-color: var(--background);
+  color: var(--foreground);
   font-size: 14px;
 }
 
@@ -66,7 +54,7 @@ textarea {
 
 button {
   padding: 12px 20px;
-  background-color: #007bff;
+  background-color: var(--primary);
   color: white;
   border: none;
   border-radius: 4px;
@@ -76,16 +64,16 @@ button {
 }
 
 button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: var(--primary-hover);
 }
 
 button:disabled {
-  background-color: #6c757d;
+  background-color: var(--text-muted);
   cursor: not-allowed;
 }
 
 .error {
-  color: red;
+  color: var(--error);
   margin-top: 10px;
 }
 
@@ -96,7 +84,7 @@ button:disabled {
 
 .results-section li {
   padding: 8px 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--border);
 }
 
 .results-section li:last-child {
@@ -108,28 +96,4 @@ button:disabled {
   font-size: 14px;
 }
 
-.code-ui {
-  max-height: 400px;
-  overflow: auto;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 10px;
-  background-color: #1e1e1e;
-  color: #fff;
-}
-
-footer {
-  text-align: center;
-  margin-top: 40px;
-  color: #777;
-  font-size: 14px;
-}
-
-footer a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-footer a:hover {
-  text-decoration: underline;
-}
+/* Removed .code-ui styles as they conflict with CodeBlock component */ 

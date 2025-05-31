@@ -3,7 +3,7 @@ import Groq from 'groq-sdk';
 /**
  * Create a new Groq client
  */
-const createClient = (config) =>
+const createClient = (config: { apiKey?: string; model?: string }) =>
   new Groq({
     apiKey:
       config.apiKey || process.env.GROQ_API_KEY || process.env.PROVIDER_API_KEY,
@@ -13,7 +13,7 @@ const createClient = (config) =>
  * Create embeddings using groq models
  */
 const createEmbedding = async (
-  client,
+  client: Groq,
   config: Parameters<typeof client.embeddings.create>[0],
 ) => {
   const response = await client.embeddings.create(config);

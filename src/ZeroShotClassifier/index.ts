@@ -1,3 +1,6 @@
+import type { OpenAI } from 'openai';
+import type { Groq } from 'groq-sdk';
+
 import chunk from 'lodash.chunk';
 import pMap from '../utils/p-map';
 
@@ -66,7 +69,7 @@ class ZeroShotClassifier {
   private dataCache: Record<string, number[]>;
 
   /** API client */
-  private client;
+  private client!: OpenAI | Groq;
 
   constructor(config: {
     /** Provider used for API, defaults to openAI */
@@ -109,7 +112,7 @@ class ZeroShotClassifier {
    * Create and set client based on provider, model and config
    * @param config
    */
-  _createAndSetClient(config): void {
+  _createAndSetClient(config: { provider: string; model?: string; apiKey?: string }): void {
     this.client = getProvider(config.provider).createClient(config);
   }
 
@@ -171,13 +174,14 @@ class ZeroShotClassifier {
     await pMap(
       chunks,
       async (currChunk: string[]) => {
-        const response = await (getProvider(this.provider)).createEmbedding(this.client, {
+        const provider = getProvider(this.provider);
+        const response = await provider.createEmbedding(this.client as unknown as OpenAI & Groq, {
           model: this.model,
           input: currChunk,
           dimensions: this.dimensions,
         });
         currChunk.forEach((text, index) => {
-          cache[text] = response[index].embedding;
+          cache[text] = response[index].embedding as number[];
         });
         return response.map((r) => r.embedding);
       },

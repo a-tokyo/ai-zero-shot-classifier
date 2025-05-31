@@ -1,4 +1,3 @@
-
 # ai-zero-shot-classifier
 
 <a href="https://npmjs.com/package/ai-zero-shot-classifier">
@@ -10,7 +9,7 @@
 </a>
 <a href="https://twitter.com/intent/follow?screen_name=ahmad_tokyo"><img src="https://img.shields.io/twitter/follow/ahmad_tokyo.svg?label=Follow%20@ahmad_tokyo" alt="Follow @ahmad_tokyo"></img></a>
 
-[Checkout the demo for a quick start!](https://a-tokyo.github.io/ai-zero-shot-classifier)
+[Checkout the demo for a quick start!](https://ai-zero-shot-classifier.ahmedtokyo.com)
 
 ---
 
@@ -141,20 +140,26 @@ git clone https://github.com/a-tokyo/ai-zero-shot-classifier.git
 Install dependencies:
 
 ```bash
-yarn install
+npm install
 ```
 
 Run the development server:
 
 ```bash
-yarn start
+npm start
 ```
 
 Run tests:
 
 ```bash
-yarn test
+npm test
 ```
+
+---
+
+[Checkout the demo for a quick start!](https://ai-zero-shot-classifier.ahmedtokyo.com)
+
+<sub><sup><small style="font-size: 0.5em; opacity: 0.3; color: #999;">[Fallback Demo!](https://a-tokyo.github.io/ai-zero-shot-classifier)</small></sup></sub>
 
 ---
 

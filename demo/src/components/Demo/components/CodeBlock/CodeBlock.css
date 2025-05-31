@@ -1,0 +1,94 @@
+.code-block {
+  margin: 1.5rem 0;
+}
+
+.code-block h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.code-container {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #1d1f21;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.copy-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: #4a5568;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  min-width: 60px;
+  text-align: center;
+  user-select: none;
+}
+
+.copy-button:hover {
+  background: #2d3748;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.copy-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.copy-button.copied {
+  background: #38a169;
+  color: white;
+}
+
+.copy-button.copied:hover {
+  background: #2f855a;
+}
+
+/* For short code blocks, center the button vertically */
+.code-container.short-code .copy-button {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.code-container.short-code .copy-button:hover {
+  transform: translateY(-50%) translateY(-1px);
+}
+
+.code-container.short-code .copy-button:active {
+  transform: translateY(-50%);
+}
+
+/* Syntax highlighter adjustments */
+.code-container pre {
+  margin: 0 !important;
+  padding: 1rem !important;
+  padding-top: 1.5rem !important;
+  padding-right: 5rem !important;
+  min-height: 3rem;
+}
+
+.code-container.short-code pre {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+}
+
+.code-container pre code {
+  font-family: 'Fira Code', 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+} 

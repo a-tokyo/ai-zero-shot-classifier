@@ -2,32 +2,35 @@ name: Test Release Publish
 
 on: [push]
 
+env:
+  npm_config_ignore_scripts: false # fixes common issues with npm ci and tailwind + next
+
 jobs:
   test:
     name: Run tests
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - name: Get npm cache
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v4
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ubuntu-latest-node-20.x-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ubuntu-latest-node-20.x-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ubuntu-latest-node-20.x-yarn-
-      - uses: actions/setup-node@v3
+            ubuntu-latest-node-20.x-npm-
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
       - name: Install
-        run: yarn install
+        run: npm ci
       - name: Test
-        run: yarn test --ci --bail
+        run: npm test -- --ci --bail
       - name: Build
-        run: NODE_ENV=production yarn build
+        run: NODE_ENV=production npm run build
 
   release_publish:
     name: Release to Github and publish to NPM
@@ -38,24 +41,24 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Get yarn cache
-        id: yarn-cache
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
+      - uses: actions/checkout@v4
+      - name: Get npm cache
+        id: npm-cache
+        run: echo "::set-output name=dir::$(npm config get cache)"
+      - uses: actions/cache@v4
         with:
-          path: ${{ steps.yarn-cache.outputs.dir }}
-          key: ubuntu-latest-node-20.x-yarn-${{ hashFiles('**/yarn.lock') }}
+          path: ${{ steps.npm-cache.outputs.dir }}
+          key: ubuntu-latest-node-20.x-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ubuntu-latest-node-20.x-yarn-
-      - uses: actions/setup-node@v3
+            ubuntu-latest-node-20.x-npm-
+      - uses: actions/setup-node@v4
         with:
           node-version: 20.x
           registry-url: https://registry.npmjs.org/
       - name: Install
-        run: yarn install
+        run: npm ci
       - name: Build
-        run: NODE_ENV=production yarn build
+        run: NODE_ENV=production npm run build
       - name: Setup env vars
         id: ownEnvVars
         run: |
@@ -76,7 +79,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         if: github.event.pull_request.user.login != 'dependabot'
-      - uses: codecov/codecov-action@v1
+      - uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
           directory: ./coverage # optional
