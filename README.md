@@ -42,14 +42,45 @@ Traditional text classification requires extensive labeled data and retraining m
 
 ## 📦 Installation
 
+### Easiest Way (Auto-Install All Dependencies)
+
 ```bash
-npm install ai-zero-shot-classifier
+npx install-peerdeps ai-zero-shot-classifier
+```
+*(works with both npm and yarn)*
+
+### Manual Installation Options
+
+**ai-zero-shot-classifier** uses peer dependencies for AI providers, giving you the flexibility to choose which one(s) to install:
+
+#### Option 1: Install All Providers
+```bash
+npm install ai-zero-shot-classifier groq-sdk openai
 ```
 
-or
+#### Option 2: Choose Your Provider
+
+**For OpenAI only:**
+```bash
+npm install ai-zero-shot-classifier openai
+```
+
+**For Groq only:**
+```bash
+npm install ai-zero-shot-classifier groq-sdk
+```
+
+### Using Yarn
 
 ```bash
-yarn add ai-zero-shot-classifier
+# All providers
+yarn add ai-zero-shot-classifier groq-sdk openai
+
+# OpenAI only
+yarn add ai-zero-shot-classifier openai
+
+# Groq only
+yarn add ai-zero-shot-classifier groq-sdk
 ```
 
 ---

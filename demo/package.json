@@ -15,7 +15,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "groq-sdk": "^0.9.1",
     "next": "15.3.3",
+    "openai": "^4.104.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-syntax-highlighter": "^15.6.1"

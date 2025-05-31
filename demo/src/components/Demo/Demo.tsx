@@ -47,15 +47,28 @@ function Demo() {
           <div className="seo-section">
             <h3>Installation and Usage via NPM/Yarn</h3>
             <p>
-              Installing the AI Zero-Shot Classifier library is simple and can be done using either npm or yarn package managers. The library is available on the npm registry and can be integrated into any JavaScript or TypeScript project in seconds. Whether you&rsquo;re building server-side applications with Node.js, client-side browser applications, or want to use it online instantly, the classifier provides universal compatibility.
+              Installing the AI Zero-Shot Classifier library requires both the core package and at least one AI provider. The library uses peer dependencies, giving you the flexibility to choose which AI provider(s) to install. Whether you&rsquo;re building server-side applications with Node.js, client-side browser applications, or want to use it online instantly, the classifier provides universal compatibility.
             </p>
             
-            <CodeBlock language="bash" title="Installation with NPM:">
-              npm install ai-zero-shot-classifier
+            <CodeBlock language="bash" title="Auto-Install All Dependencies (Easiest):">
+              npx install-peerdeps ai-zero-shot-classifier
+            </CodeBlock>
+            <p><em>(works with both npm and yarn)</em></p>
+
+            <CodeBlock language="bash" title="Manual Install - All Providers:">
+              npm install ai-zero-shot-classifier groq-sdk openai
             </CodeBlock>
 
-            <CodeBlock language="bash" title="Installation with Yarn:">
-              yarn add ai-zero-shot-classifier
+            <CodeBlock language="bash" title="Manual Install - OpenAI Only:">
+              npm install ai-zero-shot-classifier openai
+            </CodeBlock>
+
+            <CodeBlock language="bash" title="Manual Install - Groq Only:">
+              npm install ai-zero-shot-classifier groq-sdk
+            </CodeBlock>
+
+            <CodeBlock language="bash" title="Using Yarn (All Providers):">
+              yarn add ai-zero-shot-classifier groq-sdk openai
             </CodeBlock>
 
             <CodeBlock language="javascript" title="Basic Usage with Classify Function:">
@@ -182,10 +195,10 @@ const classifier = new ZeroShotClassifier({
           <div className="seo-section">
             <h3>Multi-Provider Embedding Model Support</h3>
             <p>
-              One of the standout features of the AI Zero-Shot Classifier library is its comprehensive support for multiple embedding models from different AI providers. This multi-provider approach ensures flexibility, reliability, and optimal performance for diverse use cases. The library seamlessly integrates with industry-leading providers including OpenAI, Groq, and other cutting-edge AI platforms.
+              One of the standout features of the AI Zero-Shot Classifier library is its comprehensive support for multiple embedding models from different AI providers. This multi-provider approach ensures flexibility, reliability, and optimal performance for diverse use cases. The library seamlessly integrates with industry-leading providers including <a href="https://openai.com" target="_blank" rel="noopener noreferrer">OpenAI</a>, <a href="https://groq.com" target="_blank" rel="noopener noreferrer">Groq</a>, and other cutting-edge AI platforms.
             </p>
             <p>
-              OpenAI&rsquo;s embedding models, such as text-embedding-3-small and text-embedding-ada-002, offer exceptional semantic understanding and have been extensively tested across various domains. Groq provides high-performance inference capabilities with competitive accuracy, making it an excellent choice for applications requiring low latency and high throughput.
+              <a href="https://openai.com/api/" target="_blank" rel="noopener noreferrer">OpenAI&rsquo;s</a> embedding models, such as text-embedding-3-small and text-embedding-ada-002, offer exceptional semantic understanding and have been extensively tested across various domains. <a href="https://groq.com" target="_blank" rel="noopener noreferrer">Groq</a> provides high-performance inference capabilities with competitive accuracy, making it an excellent choice for applications requiring low latency and high throughput.
             </p>
             <p>
               The multi-provider architecture offers several benefits: vendor diversification reduces dependency risk, different models excel in different domains, cost optimization through provider comparison, and future-proofing as new providers emerge. The library&rsquo;s abstracted interface means switching between providers requires minimal code changes, giving developers the flexibility to optimize for performance, cost, or specific accuracy requirements.
