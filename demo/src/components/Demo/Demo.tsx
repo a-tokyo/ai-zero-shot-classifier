@@ -6,6 +6,7 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import './Demo.css';
 import classify from '../../../../src/classify';
+import GoogleAd from '../GoogleAd/GoogleAd';
 
 interface ClassificationResult {
   text: string;
@@ -154,122 +155,135 @@ classify({
         <h1>AI Zero-Shot Classifier Demo</h1>
         <p>Classify text data against predefined labels using AI-powered embeddings.</p>
       </header>
-      <div className="container">
-        <section className="config-section">
-          <h2>Configuration</h2>
-          <div className="config-group">
-            <label htmlFor="apiKey">Provider API Key:</label>
-            <input
-              type="password"
-              id="apiKey"
-              placeholder="Enter your Provider API Key"
-              value={apiKey}
-              onChange={(e) => setApiKey(e.target.value)}
-            />
-          </div>
-          <div className="config-group">
-            <label htmlFor="provider">Provider:</label>
-            <select
-              id="provider"
-              value={provider}
-              onChange={(e) => setProvider(e.target.value as 'openai' | 'groq')}>
-              <option value="openai">OpenAI</option>
-              <option value="groq">Groq</option>
-            </select>
-          </div>
-          <div className="config-group">
-            <label htmlFor="model">Model:</label>
-            <input
-              type="text"
-              id="model"
-              placeholder="e.g., text-embedding-3-small or text-embedding-ada-002"
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-            />
-          </div>
-          <div className="config-group">
-            <label htmlFor="labels">Labels:</label>
-            <input
-              type="text"
-              id="labels"
-              placeholder="e.g., Technology, Health, Finance"
-              value={labelsInput}
-              onChange={(e) => setLabelsInput(e.target.value)}
-            />
-          </div>
-          <div className="config-group">
-            <label htmlFor="delimiter">Labels Delimiter:</label>
-            <input
-              type="text"
-              id="delimiter"
-              placeholder="e.g., , or ;"
-              value={delimiter}
-              onChange={(e) => setDelimiter(e.target.value)}
-            />
-          </div>
-          <div className="config-group">
-            <label htmlFor="similarity">Similarity Function:</label>
-            <select
-              id="similarity"
-              value={similarity}
-              onChange={(e) => setSimilarity(e.target.value)}>
-              <option value="cosine">Cosine Similarity</option>
-              <option value="dot">Dot Product</option>
-              <option value="euclidean">Euclidean Distance</option>
-            </select>
-          </div>
-          <div className="config-group">
-            <label htmlFor="dimensions">Dimensions (optional):</label>
-            <input
-              type="number"
-              id="dimensions"
-              placeholder="Dimensions for embeddings e.g., 512. Defaults to model's default."
-              value={dimensions}
-              onChange={(e) => setDimensions(e.target.value ? Number(e.target.value) : '')}
-            />
-          </div>
-        </section>
-
-        <section className="data-section">
-          <h2>Data Input</h2>
-          <div className="data-group">
-            <label htmlFor="data">Data to Classify (one item per line):</label>
-            <textarea
-              id="data"
-              rows={6}
-              placeholder="e.g., Artificial Intelligence is transforming industries."
-              value={dataInput}
-              onChange={(e) => setDataInput(e.target.value)}
-            />
-          </div>
-          <button onClick={handleClassify} disabled={loading}>
-            {loading ? 'Classifying...' : 'Classify'}
-          </button>
-          {error && <p className="error">Error: {error}</p>}
-          {results.length > 0 && (
-            <div className="results-section">
-              <h3>Classification Results:</h3>
-              <ul>
-                {results.map((result, index) => (
-                  <li key={index} className="result-item">
-                    <p><strong>Text:</strong> {result.text}</p>
-                    <p><strong>Label:</strong> {result.label}</p>
-                    <p><strong>Confidence:</strong> {result.confidence.toFixed(4)}</p>
-                  </li>
-                ))}
-              </ul>
+      <div className="desktop-layout">
+        {/* Left Ad - Desktop Only */}
+        <aside className="left-ad desktop-only">
+          <GoogleAd slot="9990971823" variant="side" />
+        </aside>
+        
+        {/* Main Content */}
+        <div className="container main-content">
+          <section className="config-section">
+            <h2>Configuration</h2>
+            <div className="config-group">
+              <label htmlFor="apiKey">Provider API Key:</label>
+              <input
+                type="password"
+                id="apiKey"
+                placeholder="Enter your Provider API Key"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+              />
             </div>
-          )}
-        </section>
+            <div className="config-group">
+              <label htmlFor="provider">Provider:</label>
+              <select
+                id="provider"
+                value={provider}
+                onChange={(e) => setProvider(e.target.value as 'openai' | 'groq')}>
+                <option value="openai">OpenAI</option>
+                <option value="groq">Groq</option>
+              </select>
+            </div>
+            <div className="config-group">
+              <label htmlFor="model">Model:</label>
+              <input
+                type="text"
+                id="model"
+                placeholder="e.g., text-embedding-3-small or text-embedding-ada-002"
+                value={model}
+                onChange={(e) => setModel(e.target.value)}
+              />
+            </div>
+            <div className="config-group">
+              <label htmlFor="labels">Labels:</label>
+              <input
+                type="text"
+                id="labels"
+                placeholder="e.g., Technology, Health, Finance"
+                value={labelsInput}
+                onChange={(e) => setLabelsInput(e.target.value)}
+              />
+            </div>
+            <div className="config-group">
+              <label htmlFor="delimiter">Labels Delimiter:</label>
+              <input
+                type="text"
+                id="delimiter"
+                placeholder="e.g., , or ;"
+                value={delimiter}
+                onChange={(e) => setDelimiter(e.target.value)}
+              />
+            </div>
+            <div className="config-group">
+              <label htmlFor="similarity">Similarity Function:</label>
+              <select
+                id="similarity"
+                value={similarity}
+                onChange={(e) => setSimilarity(e.target.value)}>
+                <option value="cosine">Cosine Similarity</option>
+                <option value="dot">Dot Product</option>
+                <option value="euclidean">Euclidean Distance</option>
+              </select>
+            </div>
+            <div className="config-group">
+              <label htmlFor="dimensions">Dimensions (optional):</label>
+              <input
+                type="number"
+                id="dimensions"
+                placeholder="Dimensions for embeddings e.g., 512. Defaults to model's default."
+                value={dimensions}
+                onChange={(e) => setDimensions(e.target.value ? Number(e.target.value) : '')}
+              />
+            </div>
+          </section>
 
-        <section className="code-section">
-          <h2>Sample Code</h2>
-          <div className="code-ui">
-            <SyntaxHighlighter language="javascript" style={atomDark}>
-              {codeString}
-            </SyntaxHighlighter>
-          </div>
-        </section>
+          <section className="data-section">
+            <h2>Data Input</h2>
+            <div className="data-group">
+              <label htmlFor="data">Data to Classify (one item per line):</label>
+              <textarea
+                id="data"
+                rows={6}
+                placeholder="e.g., Artificial Intelligence is transforming industries."
+                value={dataInput}
+                onChange={(e) => setDataInput(e.target.value)}
+              />
+            </div>
+            <button onClick={handleClassify} disabled={loading}>
+              {loading ? 'Classifying...' : 'Classify'}
+            </button>
+            {error && <p className="error">Error: {error}</p>}
+            {results.length > 0 && (
+              <div className="results-section">
+                <h3>Classification Results:</h3>
+                <ul>
+                  {results.map((result, index) => (
+                    <li key={index} className="result-item">
+                      <p><strong>Text:</strong> {result.text}</p>
+                      <p><strong>Label:</strong> {result.label}</p>
+                      <p><strong>Confidence:</strong> {result.confidence.toFixed(4)}</p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </section>
+
+          <section className="code-section">
+            <h2>Sample Code</h2>
+            <div className="code-ui">
+              <SyntaxHighlighter language="javascript" style={atomDark}>
+                {codeString}
+              </SyntaxHighlighter>
+            </div>
+          </section>
+        </div>
+
+        {/* Right Ad - Desktop Only */}
+        <aside className="right-ad desktop-only">
+          <GoogleAd slot="3396216262" variant="side" />
+        </aside>
       </div>
       <footer>
         <p>

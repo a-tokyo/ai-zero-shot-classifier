@@ -1,7 +1,7 @@
 /* src/components/Demo.css */
 
 .wrapper {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -132,4 +132,47 @@ footer a {
 
 footer a:hover {
   text-decoration: underline;
+}
+
+/* Desktop Layout with Side Ads */
+.desktop-layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.main-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.left-ad,
+.right-ad {
+  width: 160px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 20px;
+}
+
+/* Hide ads on mobile and tablet */
+.desktop-only {
+  display: none;
+}
+
+/* Show ads only on desktop (screens larger than 1200px) */
+@media (min-width: 1200px) {
+  .desktop-only {
+    display: block;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1199px) {
+  .desktop-layout {
+    flex-direction: column;
+  }
+  
+  .wrapper {
+    max-width: 1200px;
+  }
 }
