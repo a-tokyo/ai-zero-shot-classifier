@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Zero-Shot Classifier Demo
+
+This is a [Next.js](https://nextjs.org) demo showcasing the **ai-zero-shot-classifier** library with multiple AI providers.
+
+## Installation
+
+Before running the demo, make sure you have all dependencies installed:
+
+```bash
+npm install
+```
+
+The demo includes both OpenAI and Groq SDK dependencies to showcase all features of the ai-zero-shot-classifier library.
+
+## Environment Setup
+
+Create a `.env.local` file in the demo directory with your API keys:
+
+```env
+OPENAI_API_KEY=your-openai-api-key-here
+GROQ_API_KEY=your-groq-api-key-here
+```
 
 ## Getting Started
 
@@ -36,4 +57,5 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
 ## Notes:
-- Turbopack is disable in dev mode since it has no support for externalDir imports
+- Turbopack is disabled in dev mode since it has no support for externalDir imports
+- This demo includes both OpenAI and Groq dependencies to showcase all library features
