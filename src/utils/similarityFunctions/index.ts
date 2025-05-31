@@ -9,7 +9,9 @@ const similarityFunctions = {
   cosine: cosineSimilarity,
   dot: dotProduct,
   euclidean: euclideanDistance,
-};
+} as const;
+
+type SimilarityType = keyof typeof similarityFunctions;
 
 /**
  * Get similarity function based on the similarity type
@@ -17,8 +19,8 @@ const similarityFunctions = {
  * @param similarity
  * @returns Function
  */
-const getSimilarityFunction = (similarity: 'cosine' | 'dot' | 'euclidean' | string) => {
-  const fn = similarityFunctions[similarity];
+const getSimilarityFunction = (similarity: SimilarityType | string) => {
+  const fn = similarityFunctions[similarity as SimilarityType];
   if (!fn) {
     throw new Error(`Invalid similarity function: "${similarity}"`);
   }

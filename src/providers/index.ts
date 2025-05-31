@@ -7,7 +7,9 @@ import groq from './groq';
 const providers = {
   openai,
   groq,
-};
+} as const;
+
+type ProviderName = keyof typeof providers;
 
 /**
  * Get provider function based on the provider type
@@ -15,8 +17,8 @@ const providers = {
  * @param provider
  * @returns Function
  */
-const getProvider = (provider: 'openai' | 'groq' | string) => {
-  const fn = providers[provider];
+const getProvider = (provider: ProviderName | string) => {
+  const fn = providers[provider as ProviderName];
   if (!fn) {
     throw new Error(`Invalid provider: "${provider}"`);
   }

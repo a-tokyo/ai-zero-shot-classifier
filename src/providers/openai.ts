@@ -3,7 +3,7 @@ import OpenAI from 'openai';
 /**
  * Create a new OpenAI client
  */
-const createClient = (config) =>
+const createClient = (config: { apiKey?: string; model?: string }) =>
   // @ts-ignore
   new OpenAI({
     apiKey:
@@ -18,7 +18,7 @@ const createClient = (config) =>
  * Create embeddings using openAI models
  */
 const createEmbedding = async (
-  client,
+  client: OpenAI,
   config: Parameters<typeof client.embeddings.create>[0],
 ) => {
   const response = await client.embeddings.create(config);
