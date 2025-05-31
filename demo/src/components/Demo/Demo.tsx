@@ -1,10 +1,8 @@
 import React from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-import './Demo.css';
 import GoogleAd from '../GoogleAd/GoogleAd';
 import DemoForm from './components/DemoForm/DemoForm';
+import CodeBlock from './components/CodeBlock/CodeBlock';
+import './Demo.css';
 
 function Demo() {
   return (
@@ -52,24 +50,16 @@ function Demo() {
               Installing the AI Zero-Shot Classifier library is simple and can be done using either npm or yarn package managers. The library is available on the npm registry and can be integrated into any JavaScript or TypeScript project in seconds. Whether you&rsquo;re building server-side applications with Node.js, client-side browser applications, or want to use it online instantly, the classifier provides universal compatibility.
             </p>
             
-            <div className="code-block">
-              <h4>Installation with NPM:</h4>
-              <SyntaxHighlighter language="bash" style={atomDark}>
-                {`npm install ai-zero-shot-classifier`}
-              </SyntaxHighlighter>
-            </div>
+            <CodeBlock language="bash" title="Installation with NPM:">
+              npm install ai-zero-shot-classifier
+            </CodeBlock>
 
-            <div className="code-block">
-              <h4>Installation with Yarn:</h4>
-              <SyntaxHighlighter language="bash" style={atomDark}>
-                {`yarn add ai-zero-shot-classifier`}
-              </SyntaxHighlighter>
-            </div>
+            <CodeBlock language="bash" title="Installation with Yarn:">
+              yarn add ai-zero-shot-classifier
+            </CodeBlock>
 
-            <div className="code-block">
-              <h4>Basic Usage with Classify Function:</h4>
-              <SyntaxHighlighter language="javascript" style={atomDark}>
-                {`import { classify } from 'ai-zero-shot-classifier';
+            <CodeBlock language="javascript" title="Basic Usage with Classify Function:">
+              {`import { classify } from 'ai-zero-shot-classifier';
 
 const labels = ['Technology', 'Health', 'Finance'];
 const data = [
@@ -92,13 +82,10 @@ classify({
   .catch((error) => {
     console.error(error);
   });`}
-              </SyntaxHighlighter>
-            </div>
+            </CodeBlock>
 
-            <div className="code-block">
-              <h4>Advanced Usage with ZeroShotClassifier Class:</h4>
-              <SyntaxHighlighter language="javascript" style={atomDark}>
-                {`import ZeroShotClassifier from 'ai-zero-shot-classifier';
+            <CodeBlock language="javascript" title="Advanced Usage with ZeroShotClassifier Class:">
+              {`import ZeroShotClassifier from 'ai-zero-shot-classifier';
 
 const labels = ['Technology', 'Health', 'Finance'];
 const data = [
@@ -127,8 +114,7 @@ const classifier = new ZeroShotClassifier({
     console.error('Error during classification:', error);
   }
 })();`}
-              </SyntaxHighlighter>
-            </div>
+            </CodeBlock>
 
             <p>
               The library offers two main approaches for implementation: the simple classify function for quick one-off classifications, and the ZeroShotClassifier class for more advanced use cases requiring persistent configuration and multiple classification operations. Both approaches support the same powerful features including multi-provider support, custom similarity functions, and configurable batch processing across all environments.

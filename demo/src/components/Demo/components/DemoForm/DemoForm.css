@@ -96,12 +96,4 @@ button:disabled {
   font-size: 14px;
 }
 
-.code-ui {
-  max-height: 400px;
-  overflow: auto;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 10px;
-  background-color: var(--code-background);
-  color: #fff;
-} 
+/* Removed .code-ui styles as they conflict with CodeBlock component */ 

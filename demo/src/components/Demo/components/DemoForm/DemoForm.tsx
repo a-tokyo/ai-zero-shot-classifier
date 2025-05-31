@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
-
-import './DemoForm.css';
 import classify from '../../../../../../src/classify';
+import CodeBlock from '../CodeBlock/CodeBlock';
+import './DemoForm.css';
 
 interface ClassificationResult {
   text: string;
@@ -259,11 +257,9 @@ classify({
 
       <section className="code-section">
         <h2>Sample Code</h2>
-        <div className="code-ui">
-          <SyntaxHighlighter language="javascript" style={atomDark}>
-            {codeString}
-          </SyntaxHighlighter>
-        </div>
+        <CodeBlock language="javascript">
+          {codeString}
+        </CodeBlock>
       </section>
     </div>
   );
