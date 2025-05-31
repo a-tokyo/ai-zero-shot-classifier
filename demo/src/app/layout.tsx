@@ -58,20 +58,23 @@ export default function RootLayout({
       <body
         className="antialiased"
       >
-        {children}
-
         {/* Google AdSense */}
         <Script
+          async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5266987079964279"
           strategy="afterInteractive"
           crossOrigin="anonymous"
         />
+
+        {children}
+
         {/* Google Analytics */}
         <Script
+          async
           src="https://www.googletagmanager.com/gtag/js?id=G-1HV36QMN9V"
           strategy="afterInteractive"
         />
-        <Script id="google-analytics" strategy="afterInteractive">
+        <Script async id="google-analytics" strategy="afterInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
