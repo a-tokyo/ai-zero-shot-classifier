@@ -2,6 +2,9 @@ name: Test Release Publish
 
 on: [push]
 
+env:
+  npm_config_ignore_scripts: false # fixes common issues with npm ci and tailwind + next
+
 jobs:
   test:
     name: Run tests
