@@ -10,7 +10,7 @@
 </a>
 <a href="https://twitter.com/intent/follow?screen_name=ahmad_tokyo"><img src="https://img.shields.io/twitter/follow/ahmad_tokyo.svg?label=Follow%20@ahmad_tokyo" alt="Follow @ahmad_tokyo"></img></a>
 
-[Checkout the demo for a quick start!](https://a-tokyo.github.io/ai-zero-shot-classifier)
+[Checkout the demo for a quick start!](https://ai-zero-shot-classifier.ahmedtokyo.com)
 
 ---
 
@@ -155,6 +155,12 @@ Run tests:
 ```bash
 yarn test
 ```
+
+---
+
+[Checkout the demo for a quick start!](https://ai-zero-shot-classifier.ahmedtokyo.com)
+
+> [Fallback Demo!](https://a-tokyo.github.io/ai-zero-shot-classifier)
 
 ---
 
