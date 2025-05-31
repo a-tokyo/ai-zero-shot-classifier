@@ -200,17 +200,13 @@ footer a:hover {
 }
 
 .seo-container {
-  /* max-width: 1200px; */
   margin: 0 auto;
   padding: 0 20px;
 }
 
 .seo-content h2 {
   text-align: center;
-  color: #2c3e50;
-  font-size: 2.5rem;
   margin-bottom: 40px;
-  font-weight: 600;
 }
 
 .seo-section {
@@ -222,10 +218,7 @@ footer a:hover {
 }
 
 .seo-section h3 {
-  color: #34495e;
-  font-size: 1.8rem;
   margin-bottom: 20px;
-  font-weight: 600;
   border-bottom: 2px solid #3498db;
   padding-bottom: 10px;
 }
@@ -248,10 +241,7 @@ footer a:hover {
 }
 
 .seo-section .code-block h4 {
-  color: #2c3e50;
-  font-size: 1.2rem;
   margin-bottom: 12px;
-  font-weight: 600;
 }
 
 .seo-section .code-ui,
@@ -278,5 +268,60 @@ footer a:hover {
   .seo-section p {
     font-size: 15px;
     text-align: left;
+  }
+}
+
+/* Base Typography */
+h1, h2, h3, h4, h5, h6 {
+  color: #2c3e50;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 2.5rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.25rem;
+}
+
+h6 {
+  font-size: 1rem;
+}
+
+/* Responsive typography */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  h3 {
+    font-size: 1.5rem;
+  }
+  
+  h4 {
+    font-size: 1.25rem;
+  }
+  
+  h5, h6 {
+    font-size: 1rem;
   }
 }
