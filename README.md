@@ -160,7 +160,7 @@ yarn test
 
 [Checkout the demo for a quick start!](https://ai-zero-shot-classifier.ahmedtokyo.com)
 
-<sub><sup><small style="font-size: 0.5em; opacity: 0.3; color: #999;">>[Fallback Demo!](https://a-tokyo.github.io/ai-zero-shot-classifier)</small></sup></sub>
+<sub><sup><small style="font-size: 0.5em; opacity: 0.3; color: #999;">[Fallback Demo!](https://a-tokyo.github.io/ai-zero-shot-classifier)</small></sup></sub>
 
 ---
 
