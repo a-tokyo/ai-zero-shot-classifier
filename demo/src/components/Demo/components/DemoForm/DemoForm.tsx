@@ -4,7 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-import classify from '../../../../src/classify';
+import './DemoForm.css';
+import classify from '../../../../../../src/classify';
 
 interface ClassificationResult {
   text: string;

@@ -4,7 +4,7 @@ import { atomDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import './Demo.css';
 import GoogleAd from '../GoogleAd/GoogleAd';
-import DemoForm from '../DemoForm/DemoForm';
+import DemoForm from './components/DemoForm/DemoForm';
 
 function Demo() {
   return (
